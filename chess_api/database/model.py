@@ -9,6 +9,7 @@ class User(db.Model):
     phone = sa.Column(sa.String)
     child_id = db.relationship("Child", backref="user")
 
+
 class Child(db.Model):
     userId = sa.Column(sa.Integer, sa.ForeignKey(User.userId))
     childId = sa.Column(sa.Integer, primary_key=True)
@@ -20,6 +21,7 @@ class Child(db.Model):
     fideId = sa.Column(sa.Integer, default=0)
     trainer = sa.Column(sa.String)
     parent = sa.Column(sa.String)
+
 
 class Tournament(db.Model):
     id = sa.Column(sa.Integer, primary_key=True)
@@ -33,6 +35,7 @@ class Tournament(db.Model):
     stage = db.relationship("Stage", backref="tournament")
     image = db.relationship("Images", backref="tournament")
 
+
 class Stage(db.Model):
     stageId = sa.Column(sa.Integer, primary_key=True)
     tournamentId = sa.Column(sa.Integer, sa.ForeignKey(Tournament.id))
@@ -40,9 +43,9 @@ class Stage(db.Model):
     start = sa.Column(sa.Date)
     finish = sa.Column(sa.Date)
 
+
 class Images(db.Model):
     imageId = sa.Column(sa.Integer, primary_key=True)
     tournamentId = sa.Column(sa.Integer, sa.ForeignKey(Tournament.id))
     src = sa.Column(sa.String)
     type = sa.Column(sa.Integer)
-
