@@ -1,4 +1,5 @@
-from .utils import SerializeTable
+from flask import request
+from .utils import SerializeTable, validate_request, get_invalid_params
 from ...database.model import User
 from ...database import db
 from .. import api
@@ -23,4 +24,22 @@ def get_user(id):
     } if user else {
         "status": "FAILURE",
         "description": "User does not exist"
+    }
+
+
+@api.put("/user/<int:id>")
+def put_user(id):
+    user = User.query.filter_by(userId=id).first()
+    if user:
+        if validate_request(User, request.form):
+            User.query.filter_by(userId=id).update(dict(request.form))
+            db.session.commit()
+            return {"status": "OK", "ID": user.userId}
+        return {
+            "status": "FAILURE",
+            "description": f"Invalid params {', '.join(get_invalid_params(User, request.form))}"
+        }
+    return {
+        "status": "FAILURE",
+        "description": f"User id = {id} does not exist"
     }
