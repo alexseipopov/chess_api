@@ -1,5 +1,5 @@
 from flask import request
-from .utils import SerializeTable, validate_request, get_invalid_params
+from .utils import SerializeTable, validate_request, get_invalid_params, validate_requires
 from ...database.model import User
 from ...database import db
 from .. import api
@@ -27,6 +27,18 @@ def get_user(id):
     }
 
 
+@api.post("/user")
+def post_user():
+    require_fields = ["name", "isParent", "phone"]
+    if validate_requires(require_fields, request.form):
+        # TODO white check for illigal parametrs or inset into table only nessesary params (ignore illigal)
+        pass
+    return {
+        "status": "FAILURE",
+        "decription": "No such parametrs"
+    }
+
+
 @api.put("/user/<int:id>")
 def put_user(id):
     user = User.query.filter_by(userId=id).first()
@@ -35,9 +47,10 @@ def put_user(id):
             User.query.filter_by(userId=id).update(dict(request.form))
             db.session.commit()
             return {"status": "OK", "ID": user.userId}
+        error_msg = ', '.join(get_invalid_params(User, request.form))
         return {
             "status": "FAILURE",
-            "description": f"Invalid params {', '.join(get_invalid_params(User, request.form))}"
+            "description": f"Invalid params {error_msg}"
         }
     return {
         "status": "FAILURE",

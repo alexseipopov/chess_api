@@ -27,3 +27,7 @@ def validate_request(model, data) -> bool:
 def get_invalid_params(model, data) -> list:
     columns = model.__table__.columns.keys()
     return [param for param in data if param not in columns]
+
+
+def validate_requires(req_list, data) -> bool:
+    return all([True if req_item in list(data) else False for req_item in req_list])
