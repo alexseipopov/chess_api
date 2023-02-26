@@ -19,6 +19,14 @@ class SerializeTable:
         return result
 
 
+def create_res_obj(status="OK", description="OK", data=[]):
+    return {
+        "status": status,
+        "description": description,
+        "data": data
+    }
+
+
 def validate_request(model, data) -> bool:
     columns = model.__table__.columns.keys()
     return all([True if param in columns else False for param in data])
