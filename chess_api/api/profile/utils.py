@@ -39,3 +39,13 @@ def get_invalid_params(model, data) -> list:
 
 def validate_requires(req_list, data) -> bool:
     return all([True if req_item in list(data) else False for req_item in req_list])
+
+
+def bool_transform(obj: dict, targets: list):
+    resp = {}
+    for item in obj:
+        if item in targets:
+            resp.setdefault(item, bool(obj[item]))
+            continue
+        resp.setdefault(item, obj[item])
+    return resp
