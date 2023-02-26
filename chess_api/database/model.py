@@ -49,3 +49,25 @@ class Images(db.Model):
     tournamentId = sa.Column(sa.Integer, sa.ForeignKey(Tournament.id))
     src = sa.Column(sa.String)
     type = sa.Column(sa.Integer)
+
+
+class Category(db.Model):
+    category = sa.Column(sa.String, primary_key=True)
+    sex = sa.Column(sa.Boolean, nullable=False)
+    age = sa.Column(sa.Integer, nullable=False)
+    minRaiting = sa.Column(sa.Integer, nullable=False)
+    maxRaiting = sa.Column(sa.Integer, nullable=False)
+
+
+class FSHR(db.Model):
+    fshrId = sa.Column(sa.Integer, primary_key=True)
+    standard = sa.Column(sa.Integer)
+    rapid = sa.Column(sa.Integer)
+    blitz = sa.Column(sa.Integer)
+
+
+class FIDE(db.Model):
+    fideId = sa.Column(sa.Integer, primary_key=True)
+    standard = sa.Column(sa.Integer)
+    rapid = sa.Column(sa.Integer)
+    blitz = sa.Column(sa.Integer)
